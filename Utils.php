@@ -64,4 +64,31 @@ class Utils
     {
         setcookie($name, $value, $expire, $path, $domain, $secure, $httpOnly);
     }
+
+    // Method for save data to Person object
+    public static function saveDataToPersonObject(Person $person, array $data): void
+    {
+        $person->setId($data['id']);
+        $person->setFirstName($data['first_name']);
+        $person->setLastName($data['last_name']);
+        $person->setEmail($data['email']);
+        $person->setPhone($data['phone']);
+    }
+
+    // Method get PDO object
+    public static function getPdoObject(): \PDO
+    {
+        $pdo = new \PDO('mysql:host=localhost;dbname=test', 'root', '');
+        $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+        return $pdo;
+    }
+
+    // Method that insert data to the database throw getPdoObject() method
+    public static function insertDataToDatabase(array $data): void
+    {
+        $pdo = self::getPdoObject();
+        $sql = 'INSERT INTO `person` (`first_name`, `last_name`, `email`, `phone`) VALUES (:first_name, :last_name, :email, :phone)';
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute($data);
+    }
 }
