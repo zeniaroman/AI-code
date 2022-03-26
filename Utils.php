@@ -91,4 +91,21 @@ class Utils
         $stmt = $pdo->prepare($sql);
         $stmt->execute($data);
     }
+
+    // Метод который создает приложение и возвращает его
+    public static function createApp(): \Slim\App
+    {
+        $app = new \Slim\App();
+        $app->get('/', function ($request, $response) {
+            return $response->write('Hello, Slim!');
+        });
+        return $app;
+    }
+
+    // Метод для сохранения обьекта в файл
+    public static function saveObjectToFile(string $path, $object): void
+    {
+        $serializedObject = serialize($object);
+        file_put_contents($path, $serializedObject);
+    }
 }
